@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AgroHeróis: A Missão Sustentável</title>
+    <link rel="stylesheet" href="css/estilo.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Container principal com modo escuro controlado por classe -->
+    <div class="app-container" id="appContainer">
+        <header>
+            <div class="logo-area">
+                <h1>🌾 AgroHeróis</h1>
+                <span class="subtitle">A Missão Sustentável</span>
+            </div>
+            <div class="header-controls">
+                <button id="darkModeToggle" class="icon-btn" aria-label="Modo escuro">🌙</button>
+                <button id="fontIncreaseBtn" class="icon-btn" aria-label="Aumentar fonte">A+</button>
+                <button id="fontDecreaseBtn" class="icon-btn" aria-label="Diminuir fonte">A-</button>
+            </div>
+        </header>
+
+        <main id="gameMain">
+            <!-- FASES: cada fase é uma section com classe fase e id faseX -->
+            
+            <!-- FASE 0 - Apresentação e nome -->
+            <section id="fase0" class="fase active">
+                <div class="personagem">
+                    <div class="avatar">🧑‍🌾</div>
+                    <div class="fala">
+                        <p id="falaFelipe0">Olá! Eu sou Felipe, e vou te guiar na missão <strong>Agro Forte, Futuro Sustentável</strong>. Para começar, qual é o seu nome?</p>
+                    </div>
+                </div>
+                <div class="input-area">
+                    <input type="text" id="nomeJogador" placeholder="Digite seu nome" maxlength="30">
+                    <button id="confirmarNome" class="btn-primary">Começar aventura</button>
+                </div>
+            </section>
+
+            <!-- FASE 1 - Escolha do personagem (menino/menina) -->
+            <section id="fase1" class="fase">
+                <div class="personagem">
+                    <div class="avatar">🧑‍🌾</div>
+                    <div class="fala">
+                        <p id="falaFelipe1">Que bom te conhecer, <span class="nome-destaque"></span>! Agora escolha seu avatar para essa jornada sustentável.</p>
+                    </div>
+                </div>
+                <div class="personagens-escolha">
+                    <div class="card-personagem" data-personagem="menino">
+                        <div class="avatar-grande">👦</div>
+                        <h3>Herói Lucas</h3>
+                        <button class="btn-escolher">Escolher</button>
+                    </div>
+                    <div class="card-personagem" data-personagem="menina">
+                        <div class="avatar-grande">👧</div>
+                        <h3>Heroína Sofia</h3>
+                        <button class="btn-escolher">Escolher</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 2 - Transição e explicação sobre polinizadores -->
+            <section id="fase2" class="fase">
+                <div class="personagem">
+                    <div class="avatar">🧑‍🌾</div>
+                    <div class="fala">
+                        <p><span class="nome-destaque"></span>, você sabia que os polinizadores, como as abelhas, são essenciais para nossa agricultura? Vamos ajudá-las a escapar do fogo e da fumaça enquanto coletam flores!</p>
+                        <p>Use as setas ↑ (cima) e ↓ (baixo) para desviar. Fogo está embaixo, fumaça em cima. Pegue 10 flores para vencer.</p>
+                        <button id="iniciarJogoAbelha" class="btn-primary">Iniciar Missão Abelha</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 3 - Jogo da Abelha (canvas) -->
+            <section id="fase3" class="fase">
+                <div class="jogo-container">
+                    <h2>🐝 Resgate das Abelhas 🌸</h2>
+                    <div class="pontuacao">Flores coletadas: <span id="floresColetadas">0</span> / 10</div>
+                    <canvas id="gameCanvas" width="800" height="400" style="max-width:100%; height:auto; border-radius:16px; box-shadow:0 4px 15px rgba(0,0,0,0.2);"></canvas>
+                    <div class="controles-aviso">⬆️ ⬇️  Movimentar abelha</div>
+                    <button id="reiniciarAbelha" class="btn-secundario">Reiniciar fase</button>
+                </div>
+            </section>
+
+            <!-- FASE 4 - Conquista Guardião das Abelhas + transição -->
+            <section id="fase4" class="fase">
+                <div class="conquista-box azul-bg">
+                    <p id="msgParabensAbelha"></p>
+                    <div class="conquista-card">
+                        🏅 Guardião das Abelhas
+                    </div>
+                    <button id="proxCompostagem" class="btn-primary">Continuar para Compostagem ➡️</button>
+                </div>
+            </section>
+
+            <!-- FASE 5 - Explicação Compostagem -->
+            <section id="fase5" class="fase">
+                <div class="personagem">
+                    <div class="avatar">🧑‍🌾</div>
+                    <div class="fala">
+                        <p id="falaCompostagem"></p>
+                        <button id="iniciarCompostagem" class="btn-primary">Iniciar separação de resíduos</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 6 - Jogo de Compostagem (Drag and Drop) -->
+            <section id="fase6" class="fase">
+                <h2>♻️ Compostagem Sustentável</h2>
+                <div class="compostagem-area">
+                    <div class="materiais" id="materiaisLista">
+                        <!-- Itens serão inseridos via JS -->
+                    </div>
+                    <div class="composteira" id="composteiraDrop">
+                        🧺 Composteira
+                        <div class="drop-zone">Arraste os materiais para cá</div>
+                        <div class="itens-coletados" id="itensComposteira"></div>
+                    </div>
+                </div>
+                <div class="pontuacao-compostagem">
+                    Pontuação: <span id="pontosCompostagem">0</span>
+                </div>
+                <div id="feedbackCompostagem" class="feedback"></div>
+                <button id="finalizarCompostagem" class="btn-primary" disabled>Concluir compostagem</button>
+            </section>
+
+            <!-- FASE 7 - Conquista Mestre da Compostagem -->
+            <section id="fase7" class="fase">
+                <div class="conquista-box preta-bg">
+                    <p id="msgMestreCompost"></p>
+                    <div class="conquista-card">
+                        🏅 Mestre da Compostagem
+                    </div>
+                    <button id="proxPlantio" class="btn-primary">🌱 Próximo: Plantando o Futuro</button>
+                </div>
+            </section>
+
+            <!-- FASE 8 - Explicação Plantio -->
+            <section id="fase8" class="fase">
+                <div class="personagem">
+                    <div class="avatar">🧑‍🌾</div>
+                    <div class="fala">
+                        <p id="falaPlantio"></p>
+                        <button id="iniciarPlantio" class="btn-primary">Começar a plantar</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FASE 9 - Minigame Plantio (drag and drop + regar) -->
+            <section id="fase9" class="fase">
+                <h2>🌿 Cuidando do Campo</h2>
+                <div class="plantio-area">
+                    <div class="mudas">
+                        <div class="muda" data-tipo="tomate" draggable="true">🍅 Muda de Tomate</div>
+                        <div class="muda" data-tipo="alface" draggable="true">🥬 Muda de Alface</div>
+                        <div class="muda" data-tipo="milho" draggable="true">🌽 Muda de Milho</div>
+                    </div>
+                    <div class="canteiros">
+                        <div class="canteiro" data-cultura="tomate">Canteiro 1 (Tomate) <span class="planta-emoji">⬜</span></div>
+                        <div class="canteiro" data-cultura="alface">Canteiro 2 (Alface) <span class="planta-emoji">⬜</span></div>
+                        <div class="canteiro" data-cultura="milho">Canteiro 3 (Milho) <span class="planta-emoji">⬜</span></div>
+                    </div>
+                </div>
+                <button id="regarPlantas" class="btn-primary">💧 Regar Plantas</button>
+                <div id="feedbackPlantio" class="feedback"></div>
+                <button id="finalizarPlantio" class="btn-primary" disabled>Ver resultado do cultivo</button>
+            </section>
+
+            <!-- FASE 10 - Conquista Agricultor Sustentável -->
+            <section id="fase10" class="fase">
+                <div class="conquista-box verde-bg">
+                    <p id="msgAgricultor"></p>
+                    <div class="conquista-card">
+                        🏅 Agricultor Sustentável
+                    </div>
+                    <button id="proxQuiz" class="btn-primary">📋 Seguir para Quiz Final</button>
+                </div>
+            </section>
+
+            <!-- FASE 11 - Quiz Final -->
+            <section id="fase11" class="fase">
+                <h2>📚 Quiz do Conhecimento Sustentável</h2>
+                <div id="quizContainer">
+                    <div class="pergunta">
+                        <p>1. Qual é a função das abelhas?</p>
+                        <label><input type="radio" name="q1" value="a"> a) Produzir plástico</label>
+                        <label><input type="radio" name="q1" value="b"> b) Polinizar plantas ✅</label>
+                        <label><input type="radio" name="q1" value="c"> c) Produzir fumaça</label>
+                    </div>
+                    <div class="pergunta">
+                        <p>2. O que pode ir para a composteira?</p>
+                        <label><input type="radio" name="q2" value="a"> a) Pilha</label>
+                        <label><input type="radio" name="q2" value="b"> b) Plástico</label>
+                        <label><input type="radio" name="q2" value="c"> c) Casca de banana ✅</label>
+                    </div>
+                    <div class="pergunta">
+                        <p>3. O que ajuda uma agricultura sustentável?</p>
+                        <label><input type="radio" name="q3" value="a"> a) Queimadas</label>
+                        <label><input type="radio" name="q3" value="b"> b) Desmatamento</label>
+                        <label><input type="radio" name="q3" value="c"> c) Compostagem e preservação ambiental ✅</label>
+                    </div>
+                </div>
+                <button id="verificarQuiz" class="btn-primary">Corrigir Quiz</button>
+                <div id="feedbackQuiz" class="feedback"></div>
+                <button id="proxCertificado" class="btn-primary" disabled style="display:none;">Gerar Certificado 🎓</button>
+            </section>
+
+            <!-- FASE 12 - Certificado Final -->
+            <section id="fase12" class="fase">
+                <div class="certificado">
+                    <h2>🌾 CERTIFICADO DE AGROHERÓI 🌾</h2>
+                    <p>Certificamos que <strong id="certNome"></strong></p>
+                    <p>concluiu com sucesso a missão educativa</p>
+                    <p><strong>AGROHERÓIS: A MISSÃO SUSTENTÁVEL</strong></p>
+                    <p>Data: <span id="dataCertificado"></span></p>
+                    <div class="conquista-card">🏆 Herói do Agro Sustentável</div>
+                    <button id="reiniciarJogo" class="btn-primary">♻️ Jogar Novamente</button>
+                </div>
+            </section>
+
+        </main>
+        <footer>
+            <p>🌱 Agro Forte, Futuro Sustentável | Missão educativa</p>
+        </footer>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
